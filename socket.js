@@ -6,18 +6,16 @@ function initSocket(server) {
   io = new Server(server, {
     cors: {
       origin: '*',
-      methods: ['GET'],
+      methods: ['GET', 'POST'],
       credentials: true
     }
   })
-
-  let clients = new Map()
 
   io.on('connection', (socket) => {
     console.log('Socket.io client connected!');
 
     socket.on('disconnect', () => {
-      clients.delete(socket.id)
+      console.log('Socket.io client disconnected!');
     })
   });
 }

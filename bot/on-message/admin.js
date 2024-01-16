@@ -1,0 +1,4 @@
+const {
+  bot
+} = require('../bot')
+

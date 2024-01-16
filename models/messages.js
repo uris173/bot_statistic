@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose')
 const message = new Schema({
   chatId: Number,
   username: String,
-  groupId: {
+  group: {
     type: Schema.Types.ObjectId,
     ref: 'group'
   },

@@ -5,12 +5,15 @@ const cors = require('cors')
 const http = require('http')
 const server = http.createServer(app)
 const { initSocket } = require('./socket')
+const router = require('./routes')
 require('dotenv').config()
 
 initSocket(server)
 
 app.use(cors())
 app.use(express.json());
+app.use(router)
+require('./bot/bot')
 
 const PORT = 3010
 

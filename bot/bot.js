@@ -24,3 +24,6 @@ module.exports = {
   url,
   adminId
 }
+
+
+require('./branches/on-message')
