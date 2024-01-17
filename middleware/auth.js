@@ -6,7 +6,7 @@ const admin = async (req, res, next) => {
     if (!token) {
       return res.json({message: "Auth error!"})
     }
-    const decoded = jwt.verify(token, process.env.KEY)
+    const decoded = jwt.verify(token, process.env.SECRET)
     if (decoded.role === 'admin') {
       req.user = decoded
       next()

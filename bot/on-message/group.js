@@ -17,16 +17,16 @@ const groupEvents = async () => {
     })
   }
 
-  const newGroup = async (groupId, username, from) => {
+  const newGroup = async (groupId, username, from, text, msgId) => {
     let newGroup = await new Group({groupId, username}).save()
-    const newMessage = await new Message({group: newGroup._id, chatId: from.id, username: from.username || from.first_name}).save()
+    const newMessage = await new Message({group: newGroup._id, chatId: from.id, username: from.username || from.first_name, text, msgId}).save()
     const message = await Message.findById(newMessage._id).populate({path: 'group'})
     io.emit('message', message)
   }
 
-  const onMessage = async (groupId, from) => {
+  const onMessage = async (groupId, from, text, msgId) => {
     const group = await Group.findOne({groupId})
-    const newMessage = await new Message({group: group._id, chatId: from.id, username: from.username || from.first_name}).save()
+    const newMessage = await new Message({group: group._id, chatId: from.id, username: from.username || from.first_name, text, msgId}).save()
     const message = await Message.findById(newMessage._id).populate({path: 'group'})
     io.emit('message', message)
   }
@@ -48,9 +48,9 @@ const groupMessage = async (groupId, msg) => {
   if (badWord)
     return await event.messageFilter(groupId, msg.from, msg.message_id)
   if (!group) 
-    return await event.newGroup(groupId, msg.chat.username || '', msg.from)
+    return await event.newGroup(groupId, msg.chat.username || '', msg.from, msg.text, msg.message_id)
   
-  await event.onMessage(groupId, msg.from)
+  await event.onMessage(groupId, msg.from, msg.text, msg.message_id)
 }
 
 

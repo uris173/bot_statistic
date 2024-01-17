@@ -4,10 +4,10 @@ const {
   all,
   create,
   getOne,
-  changeStatus,
   update,
-  remove
-} = require('../controllers/badWord')
+  remove,
+  changeStatus
+} = require('../controllers/keyWord')
 
 router.route('/')
 .all(admin)

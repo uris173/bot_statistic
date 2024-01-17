@@ -30,6 +30,12 @@ const getOne = async (req, res) => {
   res.status(200).json(badWord)
 }
 
+const changeStatus = async (req, res) => {
+  const findBadWord = await BadWord.findById(req.params.id)
+  let badWord = await BadWord.findByIdAndUpdate(req.params.id, {$set: {status: !findKeyWord.status}}, {new: true})
+  res.status(200).json(badWord)
+}
+
 const update = async (req, res) => {
   const { _id, word } = req.body
   const findBadWord = await BadWord.findOne({word, _id: {$ne: _id}})
@@ -49,6 +55,7 @@ module.exports = {
   all,
   create,
   getOne,
+  changeStatus,
   update,
   remove
 }

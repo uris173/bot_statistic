@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const badWord = new Schema({
+const keyWord = new Schema({
   word: String,
   status: {
     type: Boolean,
@@ -9,4 +9,4 @@ const badWord = new Schema({
 })
 
 
-module.exports = model('badword', badWord)
+module.exports = model('keyword', keyWord)
