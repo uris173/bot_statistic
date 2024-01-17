@@ -2,7 +2,8 @@ const BadWord = require('../models/bad-words')
 
 const all = async (req, res) => {
   let { word, page, limit } = req.query
-  let skip = (page || 1 - 1) * limit || 20
+  limit = limit || 20
+  let skip = (page || 1 - 1) * limit
 
   let fil = {}
   word ? fil = {title: {$regex: new RegExp(word), $options: 'i'}} : fil
@@ -32,7 +33,7 @@ const getOne = async (req, res) => {
 
 const changeStatus = async (req, res) => {
   const findBadWord = await BadWord.findById(req.params.id)
-  let badWord = await BadWord.findByIdAndUpdate(req.params.id, {$set: {status: !findKeyWord.status}}, {new: true})
+  let badWord = await BadWord.findByIdAndUpdate(req.params.id, {$set: {status: !findBadWord.status}}, {new: true})
   res.status(200).json(badWord)
 }
 
