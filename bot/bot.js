@@ -1,4 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
+// require('dotenv').config();
 
 const bot = new TelegramBot(process.env.TOKEN, {
   polling: true
@@ -18,8 +19,8 @@ const adminId = 664971362
 
 
 module.exports = {
-  sliceIntoChunks,
   bot,
+  sliceIntoChunks,
   commands,
   url,
   adminId

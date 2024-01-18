@@ -24,7 +24,15 @@ const getStatisticArray = (data, days, type) => {
   return daysArray
 }
 
+const upload = async (req, res) => {
+  let file = req.files.file
+  file.url = `files/${Date.now()}_${file.name}`
+  await file.mv(file.url)
+  res.status(200).json(file.name)
+}
+
 
 module.exports = {
-  getStatisticArray
+  getStatisticArray,
+  upload
 }

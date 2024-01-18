@@ -40,17 +40,19 @@ const groupEvents = async () => {
 } 
 
 const groupMessage = async (groupId, msg) => {
-  let event = await groupEvents()
-  const word = msg.text
-  const badWord = await BadWord.findOne({word})
-  const group = await Group.findOne({groupId})
-
-  if (badWord)
-    return await event.messageFilter(groupId, msg.from, msg.message_id)
-  if (!group) 
-    return await event.newGroup(groupId, msg.chat.username || '', msg.from, msg.text, msg.message_id)
+  if (msg.text) {
+    let event = await groupEvents()
+    const word = msg.text
+    const badWord = await BadWord.findOne({word})
+    const group = await Group.findOne({groupId})
   
-  await event.onMessage(groupId, msg.from, msg.text, msg.message_id)
+    if (badWord)
+      return await event.messageFilter(groupId, msg.from, msg.message_id)
+    if (!group) 
+      return await event.newGroup(groupId, msg.chat.username || '', msg.from, msg.text, msg.message_id)
+    
+    await event.onMessage(groupId, msg.from, msg.text, msg.message_id)
+  }
 }
 
 

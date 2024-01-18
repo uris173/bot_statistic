@@ -1,4 +1,0 @@
-const {
-  bot
-} = require('../bot')
-

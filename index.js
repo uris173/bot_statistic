@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
@@ -6,14 +7,13 @@ const http = require('http')
 const server = http.createServer(app)
 const { initSocket } = require('./socket')
 const router = require('./routes')
-require('dotenv').config()
 
 initSocket(server)
+require('./bot/bot')
 
 app.use(cors())
 app.use(express.json());
 app.use(router)
-require('./bot/bot')
 
 const PORT = 3010
 
