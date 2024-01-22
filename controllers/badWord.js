@@ -3,7 +3,8 @@ const BadWord = require('../models/bad-words')
 const all = async (req, res) => {
   let { word, page, limit } = req.query
   limit = limit || 20
-  let skip = (page || 1 - 1) * limit
+  page = page || 1
+  let skip = (page - 1) * limit
 
   let fil = {}
   word ? fil = {title: {$regex: new RegExp(word), $options: 'i'}} : fil
@@ -13,7 +14,7 @@ const all = async (req, res) => {
   .sort({_id: -1})
   .limit(limit)
   .skip(skip)
-  .lean()
+  .lean();
 
   res.status(200).json({count, badWord})
 }

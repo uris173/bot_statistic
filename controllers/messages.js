@@ -6,7 +6,8 @@ const axios = require('axios')
 const all = async (req, res) => {
   let { words, page, limit } = req.query
   limit = limit || 20
-  let skip = (page || 1 - 1) * limit
+  page = page || 1
+  let skip = (page - 1) * limit
 
   let keyWords = await KeyWord.find({status: true}).lean()
   let filterWords = words ?
@@ -14,8 +15,8 @@ const all = async (req, res) => {
   keyWords.map(val => new RegExp(val.word, 'i'))
 
 
-  let count = await Message.find().count()
-  let messages = await Message.find()
+  let count = await Message.find({text: {$in: filterWords}}).count()
+  let messages = await Message.find({text: {$in: filterWords}})
   .populate({path: 'group'})
   .sort({_id: -1})
   .limit(limit)
@@ -23,6 +24,9 @@ const all = async (req, res) => {
   .lean()
 
   messages = await Promise.all(messages.map(async val => {
+    let res = await axios.get(`https://api.telegram.org/bot${process.env.TOKEN}/getChat?chat_id=${val.group.groupId}`)
+    val.group.name = res.data.result.title
+    val.group.link = res.data.result.invite_link
     // let groupResult = await axios.get(`https://api.telegram.org/bot${process.env.TOKEN}/getChat?chat_id=${val.group.groupId}`)
     // if (groupResult.data.result.join_to_send_messages) {
     //   val.group.inviteLink = groupResult.data.result.invite_link
@@ -35,7 +39,7 @@ const all = async (req, res) => {
 
     val.message = val.group.username ? 
       `https://t.me/${val.group.username}/${val.msgId}` :
-      `https://t.me/c/${val.group.groupId}/${val.msgId}`
+      `https://t.me/c/${val.group.groupId.toString().slice(4)}/${val.msgId}`
 
     return val
   }))
