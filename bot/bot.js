@@ -1,30 +1,30 @@
-const TelegramBot = require("node-telegram-bot-api");
-// require('dotenv').config();
+// const TelegramBot = require("node-telegram-bot-api");
+// // require('dotenv').config();
 
-const bot = new TelegramBot(process.env.TOKEN, {
-  polling: true
-})
+// const bot = new TelegramBot(process.env.TOKEN, {
+//   polling: true
+// })
 
-const sliceIntoChunks = (arr, chunkSize) => {
-  const res = [];
-  for (let i = 0; i < arr.length; i += chunkSize) {
-    const chunk = arr.slice(i, i + chunkSize);
-    res.push(chunk);
-  }
-  return res;
-}
-const commands = ['/start']
-const url = ''
-const adminId = 664971362
-
-
-module.exports = {
-  bot,
-  sliceIntoChunks,
-  commands,
-  url,
-  adminId
-}
+// const sliceIntoChunks = (arr, chunkSize) => {
+//   const res = [];
+//   for (let i = 0; i < arr.length; i += chunkSize) {
+//     const chunk = arr.slice(i, i + chunkSize);
+//     res.push(chunk);
+//   }
+//   return res;
+// }
+// const commands = ['/start']
+// const url = ''
+// const adminId = 664971362
 
 
-require('./branches/on-message')
+// module.exports = {
+//   bot,
+//   sliceIntoChunks,
+//   commands,
+//   url,
+//   adminId
+// }
+
+
+// require('./branches/on-message')

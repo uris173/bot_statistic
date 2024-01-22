@@ -36,9 +36,11 @@ const create = async (req, res) => {
     if (!findKeyWord) {
       const newKeyWord = await new KeyWord({word: val}).save()
       return newKeyWord
+    } else {
+      return null
     }
   }))
-  keyWords = keyWords.filter(val => val === null)
+  keyWords = keyWords.filter(val => val !== null)
 
   res.status(201).json(keyWords)
 }
