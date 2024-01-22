@@ -19,11 +19,16 @@ const all = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const findBadWord = await BadWord.findOne({word: req.body.word})
-  if (findBadWord) return res.status(200).json({message: 'Такое слово уже существует!'})
+  let badWords = await Promise.all(req.body.words.map(async val => {
+    let findBadWord = await BadWord.findOne({word: val})
+    if (!findBadWord) {
+      const newBadWord = await new BadWord({word: val}).save()
+      return newBadWord
+    }
+  }))
+  badWords = keyWords.filter(val => val === null)
 
-  let newBadWord = await new BadWord({word: req.body.word}).save()
-  res.status(201).json(newBadWord)
+  res.status(201).json(badWords)
 }
 
 const getOne = async (req, res) => {

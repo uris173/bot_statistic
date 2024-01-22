@@ -31,11 +31,16 @@ const all = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const findKeyWord = await KeyWord.findOne({word: req.body.word})
-  if (findKeyWord) return res.status(200).json({message: 'Такое слово уже существует!'})
+  let keyWords = await Promise.all(req.body.words.map(async val => {
+    let findKeyWord = await KeyWord.findOne({word: val})
+    if (!findKeyWord) {
+      const newKeyWord = await new KeyWord({word: val}).save()
+      return newKeyWord
+    }
+  }))
+  keyWords = keyWords.filter(val => val === null)
 
-  let newKeyWord = await new KeyWord({word: req.body.word}).save()
-  res.status(201).json(newKeyWord)
+  res.status(201).json(keyWords)
 }
 
 const getOne = async (req, res) => {
