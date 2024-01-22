@@ -4,7 +4,8 @@ const Messages = require('../models/messages')
 const all = async (req, res) => {
   let { word, page, limit } = req.query
   limit = limit || 20
-  let skip = (page || 1 - 1) * limit
+  page = page || 1
+  let skip = (page - 1) * limit
 
   let fil = {}
   word ? fil = {word: {$regex: new RegExp(word), $options: 'i'}} : fil;
