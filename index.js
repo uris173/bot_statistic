@@ -15,7 +15,7 @@ app.use(cors())
 app.use(express.json());
 app.use(router)
 
-const PORT = 3010
+const PORT = 3001
 
 const dev = async () => {
   try {
